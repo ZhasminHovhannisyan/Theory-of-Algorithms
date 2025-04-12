@@ -1,20 +1,9 @@
-# տրված է չկրկնվող անդամներով զանգված
-# ու մի հատ target, որը հաստատ զանգվածից որևէ երկու թվերի գումար է ներկայացնում
-# գտնել էտ երկու թվերի ինդեքսները
+# Given an array of integers nums and an integer target, 
+# return indices of the two numbers such that they add up to target.
 
 
 import random
-
-
-# solution1: finds using two nested loops, so the time complexity is O(n2)
-
-def function(list, targ):
-    for i in range(len(list)):
-        for j in range(i+1, len(list)):
-            if i != j and list[i]+list[j] == targ:
-                return i, j
-
-
+# calculate random target for given array
 def calc_targ(arr):
     el1 = random.choice(arr)
     el2 = random.choice(arr)
@@ -23,11 +12,33 @@ def calc_targ(arr):
     return el1 + el2
 
 
-N = int(input("enter number of elements: "))
-list1 = []
-for i in range(N):
-    list1.append(int(input(f"enter element {i}: ")))
+# solution1: finds using two nested loops, time complexity O(n2)
+def two_sum(list, targ):
+    for i in range(len(list)):
+        for j in range(i+1, len(list)):
+            if i != j and list[i]+list[j] == targ:
+                return i, j
+
+
+
+# solution2: mapping, time complexity O(n)
+def two_sum_optimized(nums, target):
+    visited = {}
+    
+    for i, num in enumerate(nums):
+        remaining = target - num
+        if remaining in visited:
+            return [visited[remaining], i]
+        visited[num] = i
+    
+    return None
+
+
+
+list1 = [5, 6, 2, 10, 3, 21, 1, 17]
 target = calc_targ(list1)
-i1,  i2 = function(list1, target)
+i1,  i2 = two_sum(list1, target)
+i3, i4 = two_sum_optimized(list1, target)
 print("Generated target is ",target)
-print("The indexes are ", i1, i2)
+print("solution1: ", i1, i2)
+print("solution2: ", i3, i4)
